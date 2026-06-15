@@ -1,0 +1,969 @@
+@@ -0,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedVision AI — 의료기기 AI 진단 솔루션</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #0ea5e9;
+      --primary-dark: #0284c7;
+      --accent: #06b6d4;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --gradient: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 50%, #14b8a6 100%);
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 24px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 20px 60px rgba(14, 165, 233, 0.15);
+      --radius: 16px;
+      --radius-lg: 24px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow 0.3s;
+    }
+
+    nav.scrolled {
+      box-shadow: var(--shadow-md);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--gradient);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .btn-primary {
+      background: var(--gradient);
+      color: white;
+      box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(14, 165, 233, 0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -20%;
+      width: 70%;
+      height: 120%;
+      background: radial-gradient(ellipse, rgba(14, 165, 233, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      left: -10%;
+      width: 50%;
+      height: 80%;
+      background: radial-gradient(ellipse, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: rgba(14, 165, 233, 0.1);
+      border: 1px solid rgba(14, 165, 233, 0.2);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-badge span {
+      width: 8px;
+      height: 8px;
+      background: #22c55e;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 .gradient-text {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      max-width: 520px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      width: 100%;
+      max-width: 420px;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .scan-preview {
+      background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scan-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 3px;
+      opacity: 0.6;
+    }
+
+    .scan-cell {
+      aspect-ratio: 1;
+      border-radius: 2px;
+      background: rgba(14, 165, 233, 0.3);
+      animation: scanPulse 3s ease-in-out infinite;
+    }
+
+    .scan-cell:nth-child(odd) { animation-delay: 0.5s; }
+    .scan-cell:nth-child(3n) { background: rgba(6, 182, 212, 0.5); }
+    .scan-cell:nth-child(5n) { background: rgba(20, 184, 166, 0.4); }
+
+    @keyframes scanPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    .scan-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient);
+      box-shadow: 0 0 12px rgba(14, 165, 233, 0.8);
+      animation: scanLine 3s linear infinite;
+    }
+
+    @keyframes scanLine {
+      0% { top: 0; }
+      100% { top: 100%; }
+    }
+
+    .scan-result {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .scan-result-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .scan-result-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #22c55e;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 0.75rem;
+      background: var(--bg);
+      border-radius: 10px;
+    }
+
+    .stat-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    /* ── Sections ── */
+    section {
+      padding: 6rem 2rem;
+    }
+
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-header h2 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    /* ── Features ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(14, 165, 233, 0.3);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(14, 165, 233, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* ── How it works ── */
+    .how-it-works {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem;
+      position: relative;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step-number {
+      width: 56px;
+      height: 56px;
+      background: var(--gradient);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 auto 1.25rem;
+      box-shadow: 0 4px 14px rgba(14, 165, 233, 0.3);
+    }
+
+    .step h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .step p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* ── Specs ── */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .specs-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .spec-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.2s;
+    }
+
+    .spec-item:hover {
+      border-color: rgba(14, 165, 233, 0.3);
+    }
+
+    .spec-check {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      background: rgba(34, 197, 94, 0.1);
+      color: #22c55e;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .spec-item strong {
+      display: block;
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .spec-item span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .specs-visual {
+      background: var(--gradient);
+      border-radius: var(--radius-lg);
+      padding: 3rem;
+      color: white;
+      text-align: center;
+    }
+
+    .specs-visual h3 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .specs-visual p {
+      opacity: 0.9;
+      font-size: 1.05rem;
+      margin-bottom: 2rem;
+    }
+
+    .cert-badges {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .cert-badge {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      padding: 0.6rem 1.2rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* ── CTA ── */
+    .cta {
+      text-align: center;
+      padding: 6rem 2rem;
+    }
+
+    .cta-box {
+      max-width: 700px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 4rem 3rem;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient);
+    }
+
+    .cta-box h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .cta-box p {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--text);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 3rem 2rem 2rem;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-logo {
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    .footer-copy {
+      width: 100%;
+      text-align: center;
+      padding-top: 2rem;
+      margin-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.8rem;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .hero-visual {
+        order: -1;
+      }
+
+      .specs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    /* ── Fade-in animation ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <div class="logo-icon">+</div>
+        MedVision AI
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">기능</a></li>
+        <li><a href="#how-it-works">작동 원리</a></li>
+        <li><a href="#specs">인증</a></li>
+        <li><a href="#contact" class="btn btn-primary">문의하기</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-content fade-in">
+        <div class="hero-badge">
+          <span></span>
+          식약처 허가 의료기기 AI
+        </div>
+        <h1>
+          정밀 진단을 위한<br>
+          <span class="gradient-text">차세대 AI 모델</span>
+        </h1>
+        <p>
+          MedVision AI는 딥러닝 기반 영상 분석 기술로 의료 영상을 실시간 분석하여
+          의료진의 진단 정확도를 높이고, 환자 치료 시간을 단축합니다.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary">데모 신청</a>
+          <a href="#how-it-works" class="btn btn-outline">자세히 알아보기</a>
+        </div>
+      </div>
+
+      <div class="hero-visual fade-in">
+        <div class="hero-card">
+          <div class="scan-preview">
+            <div class="scan-grid">
+              <div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div>
+              <div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div>
+              <div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div>
+              <div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div>
+              <div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div>
+              <div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div>
+              <div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div>
+              <div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div><div class="scan-cell"></div>
+            </div>
+            <div class="scan-line"></div>
+          </div>
+          <div class="scan-result">
+            <div>
+              <div class="scan-result-label">AI 분석 신뢰도</div>
+              <div class="scan-result-value">98.7%</div>
+            </div>
+            <div>
+              <div class="scan-result-label">분석 시간</div>
+              <div class="scan-result-value" style="color: var(--primary);">1.2s</div>
+            </div>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-value">50만+</div>
+              <div class="stat-label">학습 데이터</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">120+</div>
+              <div class="stat-label">병원 도입</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">24/7</div>
+              <div class="stat-label">실시간 분석</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="section-inner">
+      <div class="section-header fade-in">
+        <div class="section-tag">핵심 기능</div>
+        <h2>의료 현장에 최적화된 AI</h2>
+        <p>임상 환경에서 검증된 기술로 의료진과 환자 모두에게 더 나은 경험을 제공합니다.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🔬</div>
+          <h3>고정밀 영상 분석</h3>
+          <p>X-ray, CT, MRI 등 다양한 의료 영상을 딥러닝으로 분석하여 병변을 자동 탐지하고 위치를 정밀하게 표시합니다.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">⚡</div>
+          <h3>실시간 처리</h3>
+          <p>GPU 가속 엔진으로 영상 업로드 후 1~2초 내 분석 결과를 제공하여 응급 상황에서도 즉각적인 판독을 지원합니다.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🛡️</div>
+          <h3>의료 데이터 보안</h3>
+          <p>HIPAA 및 개인정보보호법을 준수하는 암호화 전송·저장 체계로 환자 데이터를 안전하게 보호합니다.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">📊</div>
+          <h3>진단 보조 리포트</h3>
+          <p>AI 분석 결과를 구조화된 리포트로 자동 생성하여 의료진의 판독 업무를 효율적으로 지원합니다.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🔗</div>
+          <h3>PACS 연동</h3>
+          <p>기존 병원 PACS, EMR 시스템과 표준 DICOM 프로토콜로 seamless하게 연동됩니다.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🎯</div>
+          <h3>지속적 학습</h3>
+          <p>새로운 임상 데이터로 모델을 지속 업데이트하여 진단 정확도를 꾸준히 향상시킵니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how-it-works" class="how-it-works">
+    <div class="section-inner">
+      <div class="section-header fade-in">
+        <div class="section-tag">작동 원리</div>
+        <h2>4단계로 완성되는 AI 진단</h2>
+        <p>복잡한 AI 기술을 간단한 워크플로우로 의료 현장에 적용합니다.</p>
+      </div>
+      <div class="steps">
+        <div class="step fade-in">
+          <div class="step-number">1</div>
+          <h3>영상 수집</h3>
+          <p>의료기기에서 DICOM 형식의 영상 데이터를 자동으로 수집합니다.</p>
+        </div>
+        <div class="step fade-in">
+          <div class="step-number">2</div>
+          <h3>AI 전처리</h3>
+          <p>노이즈 제거, 정규화 등 전처리를 거쳐 분석에 최적화된 데이터로 변환합니다.</p>
+        </div>
+        <div class="step fade-in">
+          <div class="step-number">3</div>
+          <h3>딥러닝 분석</h3>
+          <p>학습된 CNN/Transformer 모델이 병변을 탐지하고 분류합니다.</p>
+        </div>
+        <div class="step fade-in">
+          <div class="step-number">4</div>
+          <h3>결과 전달</h3>
+          <p>시각화된 분석 결과와 리포트를 의료진 워크스테이션에 실시간 전달합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specs & Certifications -->
+  <section id="specs">
+    <div class="section-inner">
+      <div class="section-header fade-in">
+        <div class="section-tag">기술 사양 & 인증</div>
+        <h2>신뢰할 수 있는 의료기기</h2>
+        <p>국제 표준과 국내 규제를 모두 충족하는 검증된 AI 솔루션입니다.</p>
+      </div>
+      <div class="specs-grid">
+        <ul class="specs-list fade-in">
+          <li class="spec-item">
+            <div class="spec-check">✓</div>
+            <div>
+              <strong>모델 아키텍처</strong>
+              <span>Vision Transformer (ViT) + U-Net 하이브리드 구조</span>
+            </div>
+          </li>
+          <li class="spec-item">
+            <div class="spec-check">✓</div>
+            <div>
+              <strong>지원 영상 형식</strong>
+              <span>DICOM 3.0 — X-ray, CT, MRI, 초음파</span>
+            </div>
+          </li>
+          <li class="spec-item">
+            <div class="spec-check">✓</div>
+            <div>
+              <strong>임상 성능</strong>
+              <span>민감도 97.2% · 특이도 98.5% (다기관 임상시험)</span>
+            </div>
+          </li>
+          <li class="spec-item">
+            <div class="spec-check">✓</div>
+            <div>
+              <strong>배포 환경</strong>
+              <span>온프레미스 · 클라우드 · 엣지 디바이스 지원</span>
+            </div>
+          </li>
+        </ul>
+        <div class="specs-visual fade-in">
+          <h3>98.7%</h3>
+          <p>임상 검증 진단 정확도</p>
+          <div class="cert-badges">
+            <span class="cert-badge">식약처 허가</span>
+            <span class="cert-badge">ISO 13485</span>
+            <span class="cert-badge">CE MDR</span>
+            <span class="cert-badge">FDA 510(k)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="contact" class="cta">
+    <div class="cta-box fade-in">
+      <h2>MedVision AI를 도입해 보세요</h2>
+      <p>병원 맞춤 데모, 기술 상담, 도입 비용 안내를 무료로 제공합니다.<br>의료 AI의 미래를 함께 만들어 갑시다.</p>
+      <a href="mailto:contact@medvision.ai" class="btn btn-primary">무료 상담 신청</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">MedVision AI</div>
+      <ul class="footer-links">
+        <li><a href="#">회사 소개</a></li>
+        <li><a href="#">기술 백서</a></li>
+        <li><a href="#">개인정보처리방침</a></li>
+        <li><a href="#">이용약관</a></li>
+      </ul>
+      <div class="footer-copy">
+        &copy; 2026 MedVision AI. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // Fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
