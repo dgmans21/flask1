@@ -5,7 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>class-id</title>
 </head>
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .my-box {
+        width: 200px;
+        height:120px;
+        background-color:plum;
+        margin-bottom: 20px;
+        border-radius: 30px;
+    }
+    .round-box {
+        border-radius: 50%;
+        background-color: olive;
+    }
+
+    #small-box {
+        width: 100px;
+        height: 100px;
+        background-color: tomato;
+        margin-bottom: 20px;
+        border-radius: 30px;
+    }
+    div.my-box.good {
+        width: 100px;
+        height: 200px;
+        background-color: aquamarine;
+        margin-bottom: 20px;
+        border-radius: 30px;
+    }
+    .parent  span{
+        background-color: yellow;
+        font-size: 20px;
+    }
+                    
+</style>
 <body>
     <h1>디자인정보</h1>
+    <div id="small-box"></div>
+    <div class="my-box" style="background-color: red;"`></div>
+    <div class="my-box"></div>
+    <div class="my-box good"></div>
+    <div class="my-box"></div>  
+    <div class="my-box round-box"></div>
+    <div class="parent">
+        <div>
+        <span>스팬1</span>
+        <span>스팸2</span>
+        <span>쓰팬3</span>
+        </div>
+    </div>
+    <span>외부4</span>
 </body>
 </html>

@@ -17,3 +17,9 @@ def login():
 @view_bp.route('/lectures')
 def lectures():
     return render_template('lectures.html')
+@view_bp.route('/class')
+def register():
+    return render_template('class-id.html')
+@view_bp.route('/layout')
+def layout():
+    return render_template('layout.html')
