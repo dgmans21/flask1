@@ -9,3 +9,11 @@ def home():
 @view_bp.route('/basic')
 def basic():
     return render_template('basic.html')
+
+@view_bp.route('/login')
+def login():
+    return render_template('login.html')
+
+@view_bp.route('/lectures')
+def lectures():
+    return render_template('lectures.html')

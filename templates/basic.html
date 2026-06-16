@@ -3,9 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>웹디자인</title>
+    <style>
+        .form-container {
+          display: flex;
+          flex-direction: column; /* 세로 정렬 */
+          gap: 10px;              /* 요소 사이의 간격 자동으로 주기 */
+          width: 200px;           /* 원하는 너비 지정 가능 */
+          background-color: gray;
+        }
+      </style>
 </head>
 <body>
-    
+    <h1>1. 안녕 </h1>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; background-color: yellowgreen; width: 700px; height: 400px;">
+        <div style="width: 200px; height: 200px; background-color: red; font-size: 20px;">
+          <h1>Basic</h1>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
+        </div>
+        <div style="width: 300px; height: 200px; background-color: blue; font-weight: bold;">
+          <h1>Basic</h1>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
+        
+        </div>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; background-color: rgb(177, 85, 136); width: 600px; height: 200px; border: 1px solid black; margin-top: 100px;;">
+    <div style="width: 100px; height: 100px; background-color: blue; color: white; width: 50%;">div1</div>
+    <div style="width: 100px; height: 100px; background-color: blue; color: gray;">div2</div>
+    <span style="width: 100px; height: 100px; background-color: red; ">span1</span>
+    <span style="width: 100px; height: 100px; background-color: red;">span2</span>
+    </div>
+    <header>
+        <h1>Header</h1>
+    </header>
+    <main>
+        <h1>Main</h1>
+    </main>
+    <section>
+        <h1>Section</h1>
+    </section>
+    <article>
+        <h1>Article</h1>
+    </article>
+    <aside>
+        <h1>Aside</h1>
+    </aside>
+    <footer>
+        <h1>Footer</h1>
+    </footer>
+    <img style="width: 700px; height: 500px;" src="https://picsum.photos/200/300" alt="random image" >
+    <img style="border-radius: 50px;" src="https://image-cdn.hypb.st/https%3A%2F%2Fkr.hypebeast.com%2Ffiles%2F2018%2F10%2Fkakao-talk-2018-1.jpeg?q=75&w=800&cbr=1&fit=max" alt="kakao image">
+    <img src="https://picsum.photos/200/300" alt="random image"></br>
+    <input type="text" placeholder="이름">
+    <input style="width: 100px; height: 30px;" type="text" placeholder="나이">
+    <input type="checkbox" name="agree" id="agree">
+    <label for="agree">동의합니다.</label>
+    <input type="radio" name="gender" id="male">
+    <label for="male">남자</label>
+    <input type="radio" name="gender" id="female">
+    <label for="female">여자</label>
+    <input type="file" name="file" id="file">
+    <input type="date" name="date" id="date">
+    <input type="time" name="time" id="time">
+    <input type="email" name="email" id="email">
+    <input type="password" name="password" id="password">
+    <input type="number" name="number" id="number">
+    <input type="tel" name="tel" id="tel">
+    <input type="url" name="url" id="url">
+    <select name="select" id="select">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+    </select>
+    <textarea style="width: 100px; height: 100px;" name="textarea" id="textarea" placeholder="내용을 입력해주세요."></textarea>
+    <button>제출</button>
+    <a href="login">로그인</a>
+    <a href="lectures">정보화면</a>
+    <iframe 
+        width="560" 
+        height="315" 
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+        title="YouTube video player" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        referrerpolicy="strict-origin-when-cross-origin" 
+        allowfullscreen>
+    </iframe>
+
+    <script>    
+        document.getElementById('submit').addEventListener('click', function() {
+            alert('제출되었습니다.');
+        });
+    </script>
 </body>
 </html>

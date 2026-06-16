@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>강의 목록 — EduStudio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #050505;
+      --purple: #7c5cff;
+      --purple-dark: #6246ea;
+      --purple-glow: rgba(124, 92, 255, 0.3);
+      --white: #ffffff;
+      --gray: #f4f4f5;
+      --text-dark: #111111;
+      --muted: rgba(255,255,255,0.55);
+      --border: rgba(255,255,255,0.1);
+    }
+
+    body {
+      font-family: 'Noto Sans KR', 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--white);
+    }
+
+    /* ── Hero (dark grid) ── */
+    .hero {
+      position: relative;
+      min-height: 62vh;
+      padding: 2rem 2rem 0;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 1rem;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4rem;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: white;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--purple);
+      border: none;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+
+    .nav-btn:hover { transform: scale(1.08); }
+
+    .nav-link {
+      padding: 0.55rem 1.2rem;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .nav-link:hover { border-color: var(--purple); color: white; }
+
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: end;
+      padding-bottom: 5rem;
+    }
+
+    .hero-text h1 {
+      font-size: clamp(3rem, 7vw, 5rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      margin-bottom: 1rem;
+    }
+
+    .hero-text h1 em {
+      font-style: normal;
+      color: var(--purple);
+    }
+
+    .hero-text p {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 400px;
+      line-height: 1.7;
+    }
+
+    .hero-card {
+      width: 220px;
+      background: var(--purple);
+      border-radius: 20px;
+      padding: 1.2rem;
+      transform: rotate(4deg);
+      box-shadow: 0 24px 60px var(--purple-glow);
+    }
+
+    .hero-card-avatar {
+      width: 100%;
+      aspect-ratio: 1;
+      background: rgba(255,255,255,0.15);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .hero-card p {
+      font-size: 0.85rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    /* ── White content section ── */
+    .content-wrap {
+      background: var(--white);
+      border-radius: 40px 40px 0 0;
+      margin-top: -3rem;
+      position: relative;
+      z-index: 2;
+      min-height: 50vh;
+      padding: 3.5rem 2rem 4rem;
+      color: var(--text-dark);
+    }
+
+    .content-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 2rem;
+    }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .tab {
+      padding: 0.55rem 1.3rem;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1.5px solid #ddd;
+      background: white;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .tab.active {
+      background: var(--purple);
+      border-color: var(--purple);
+      color: white;
+    }
+
+    .tab:hover:not(.active) {
+      border-color: var(--purple);
+      color: var(--purple);
+    }
+
+    /* ── Lecture cards ── */
+    .lecture-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .lecture-card {
+      border: 1.5px solid #eee;
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+    }
+
+    .lecture-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+    }
+
+    .lecture-card.hidden { display: none; }
+
+    .lecture-thumb {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    .lecture-thumb.purple { background: linear-gradient(135deg, #7c5cff, #6246ea); }
+    .lecture-thumb.blue   { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+    .lecture-thumb.green  { background: linear-gradient(135deg, #10b981, #059669); }
+    .lecture-thumb.orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+
+    .lecture-body {
+      padding: 1.3rem;
+    }
+
+    .lecture-meta {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .badge {
+      padding: 0.2rem 0.65rem;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .badge.purple { background: rgba(124,92,255,0.12); color: var(--purple); }
+    .badge.gray   { background: #f0f0f0; color: #666; }
+
+    .lecture-body h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      line-height: 1.4;
+    }
+
+    .lecture-body p {
+      font-size: 0.85rem;
+      color: #777;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .lecture-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: #999;
+    }
+
+    .lecture-footer strong {
+      color: var(--purple);
+      font-weight: 700;
+    }
+
+    /* ── Strength tags ── */
+    .strength {
+      margin-top: 3.5rem;
+      padding-top: 2.5rem;
+      border-top: 1.5px solid #eee;
+    }
+
+    .strength-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+
+    .strength-tag {
+      padding: 0.5rem 1.1rem;
+      border-radius: 100px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: 1.5px solid #ddd;
+    }
+
+    .strength-tag.fill {
+      background: var(--purple);
+      border-color: var(--purple);
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: var(--white);
+      color: #aaa;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero-content { grid-template-columns: 1fr; }
+      .hero-card { display: none; }
+      .content-wrap { border-radius: 28px 28px 0 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <nav>
+        <a href="/" class="logo">EduStudio</a>
+        <div class="nav-actions">
+          <button class="nav-btn" aria-label="이전">‹</button>
+          <button class="nav-btn" aria-label="다음">›</button>
+          <a href="/login" class="nav-link">로그인</a>
+        </div>
+      </nav>
+
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>웹<br><em>강의</em></h1>
+          <p>UI/UX부터 AI·웹개발까지, 실무 중심 온라인 강의를 만나보세요.</p>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-avatar">🎓</div>
+          <p>이번 달 인기 강의<br>Flask 웹개발 입문</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <div class="content-wrap">
+    <div class="content-inner">
+      <div class="section-label">COURSES</div>
+      <h2 class="section-title">강의 정보</h2>
+
+      <!-- Tabs -->
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-category="all">전체</button>
+        <button class="tab" data-category="web">웹개발</button>
+        <button class="tab" data-category="design">UI/UX</button>
+        <button class="tab" data-category="ai">AI/ML</button>
+      </div>
+
+      <!-- Cards -->
+      <div class="lecture-grid">
+        <article class="lecture-card" data-category="web">
+          <div class="lecture-thumb purple">🌐</div>
+          <div class="lecture-body">
+            <div class="lecture-meta">
+              <span class="badge purple">웹개발</span>
+              <span class="badge gray">초급</span>
+            </div>
+            <h3>Flask 웹개발 입문</h3>
+            <p>Python Flask로 REST API와 Blueprint 구조를 배우는 실습 중심 강의</p>
+            <div class="lecture-footer">
+              <span>12강 · 8시간</span>
+              <strong>무료</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="lecture-card" data-category="design">
+          <div class="lecture-thumb blue">🎨</div>
+          <div class="lecture-body">
+            <div class="lecture-meta">
+              <span class="badge purple">UI/UX</span>
+              <span class="badge gray">중급</span>
+            </div>
+            <h3>모던 UI 디자인 시스템</h3>
+            <p>Figma 기반 컴포넌트 설계와 다크모드 UI 패턴 학습</p>
+            <div class="lecture-footer">
+              <span>18강 · 12시간</span>
+              <strong>₩49,000</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="lecture-card" data-category="ai">
+          <div class="lecture-thumb green">🤖</div>
+          <div class="lecture-body">
+            <div class="lecture-meta">
+              <span class="badge purple">AI/ML</span>
+              <span class="badge gray">중급</span>
+            </div>
+            <h3>머신러닝 실전 프로젝트</h3>
+            <p>scikit-learn으로 분류·회귀 모델을 만들고 Flask API에 배포하기</p>
+            <div class="lecture-footer">
+              <span>20강 · 15시간</span>
+              <strong>₩79,000</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="lecture-card" data-category="web">
+          <div class="lecture-thumb orange">⚡</div>
+          <div class="lecture-body">
+            <div class="lecture-meta">
+              <span class="badge purple">웹개발</span>
+              <span class="badge gray">고급</span>
+            </div>
+            <h3>JavaScript ES6+ 마스터</h3>
+            <p>비동기 처리, 모듈 시스템, DOM 조작까지 프론트엔드 핵심 역량</p>
+            <div class="lecture-footer">
+              <span>24강 · 16시간</span>
+              <strong>₩59,000</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="lecture-card" data-category="design">
+          <div class="lecture-thumb purple">✏️</div>
+          <div class="lecture-body">
+            <div class="lecture-meta">
+              <span class="badge purple">UI/UX</span>
+              <span class="badge gray">초급</span>
+            </div>
+            <h3>웹 포트폴리오 제작</h3>
+            <p>그리드 레이아웃과 타이포그래피로 나만의 포트폴리오 완성</p>
+            <div class="lecture-footer">
+              <span>10강 · 6시간</span>
+              <strong>₩39,000</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="lecture-card" data-category="ai">
+          <div class="lecture-thumb blue">📊</div>
+          <div class="lecture-body">
+            <div class="lecture-meta">
+              <span class="badge purple">AI/ML</span>
+              <span class="badge gray">초급</span>
+            </div>
+            <h3>데이터 분석 with Python</h3>
+            <p>pandas·numpy 기초부터 시각화, 통계 분석까지 한 번에</p>
+            <div class="lecture-footer">
+              <span>16강 · 10시간</span>
+              <strong>₩45,000</strong>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Strength section (like image) -->
+      <div class="strength">
+        <div class="section-label">STRENGTH</div>
+        <h2 class="section-title" style="font-size:1.6rem;">플랫폼 강점</h2>
+        <div class="strength-tags">
+          <span class="strength-tag fill">실무 프로젝트</span>
+          <span class="strength-tag">1:1 멘토링</span>
+          <span class="strength-tag fill">수료증 발급</span>
+          <span class="strength-tag">평생 수강</span>
+          <span class="strength-tag fill">커뮤니티</span>
+          <span class="strength-tag">취업 연계</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>&copy; 2026 EduStudio. All rights reserved.</footer>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab');
+    const cards = document.querySelectorAll('.lecture-card');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const category = tab.dataset.category;
+        cards.forEach(card => {
+          card.classList.toggle(
+            'hidden',
+            category !== 'all' && card.dataset.category !== category
+          );
+        });
+      });
+    });
+  </script>
+</body>
+</html>
