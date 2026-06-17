@@ -23,3 +23,13 @@ def register():
 @view_bp.route('/layout')
 def layout():
     return render_template('layout.html')
+@view_bp.route('/design')
+def design():
+    return render_template('design.html')
+@view_bp.route('/testpage')
+def testpage():
+    return render_template('testpage.html')
+
+@view_bp.route('/jmtest')
+def jmtest():
+    return render_template('jmtest.html')

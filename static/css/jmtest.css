@@ -1,0 +1,181 @@
+/* JM CODING — jmtest.html 전용 */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body.jm-page {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #fff;
+  color: #222;
+  line-height: 1.6;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: block;
+  align-items: unset;
+}
+
+a { text-decoration: none; color: inherit; }
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Header ── */
+.jm-header {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.jm-header .container {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.jm-logo img {
+  height: 36px;
+  width: auto;
+}
+
+.jm-nav {
+  display: flex;
+  gap: 28px;
+}
+
+.jm-nav a {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  transition: color 0.2s;
+}
+
+.jm-nav a:hover { color: #007bff; }
+
+/* ── Hero ── */
+.jm-hero {
+  position: relative;
+  height: 340px;
+  background: url('/static/images/bg.jpg') center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.jm-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.jm-hero-text {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+}
+
+.jm-hero-text p {
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  font-weight: 700;
+  line-height: 1.6;
+  letter-spacing: -0.02em;
+}
+
+.jm-hero-text .highlight {
+  color: #4da3ff;
+}
+
+/* ── Cards Grid ── */
+.jm-cards {
+  padding: 48px 0 56px;
+}
+
+.jm-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px 28px;
+}
+
+.jm-card-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.jm-card-img.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  object-fit: unset;
+}
+
+.jm-card-img.bg-html  { background: linear-gradient(135deg, #e44d26, #f06529); }
+.jm-card-img.bg-spring { background: linear-gradient(135deg, #6db33f, #4a8c2a); }
+.jm-card-img.bg-sql   { background: linear-gradient(135deg, #00758f, #f29111); }
+
+.jm-card-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #007bff;
+  margin-bottom: 4px;
+}
+
+.jm-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 8px;
+}
+
+.jm-card-desc {
+  font-size: 12px;
+  color: #888;
+  line-height: 1.7;
+}
+
+/* ── Footer ── */
+.jm-footer {
+  border-top: 1px solid #eee;
+  padding: 40px 0 48px;
+}
+
+.jm-footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.jm-footer h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.jm-footer ul {
+  list-style: none;
+}
+
+.jm-footer li {
+  font-size: 12px;
+  color: #888;
+  line-height: 1.9;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .jm-nav { display: none; }
+  .jm-grid { grid-template-columns: 1fr; }
+  .jm-footer-grid { grid-template-columns: 1fr; }
+  .jm-hero { height: 260px; }
+}

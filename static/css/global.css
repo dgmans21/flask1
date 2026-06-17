@@ -1,0 +1,101 @@
+/* ==========================================================================
+   1. 폰트 선언
+   ========================================================================== */
+   @font-face {
+    font-family: 'Noto Sans KR';
+    src: url('/static/css/NotoSansKR-Light.ttf') format('truetype');
+    font-weight: 300;
+}
+@font-face {
+    font-family: 'Noto Sans KR';
+    src: url('/static/css/NotoSansKR-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+@font-face {
+    font-family: 'Noto Sans KR';
+    src: url('/static/css/NotoSansKR-Bold.ttf') format('truetype');
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   2. 전체 레이아웃 (반응형 버그 수정 완료)
+   ========================================================================== */
+body {
+    min-height: 100vh; 
+    width: 100%; /* ❌ 기존 100vw에서 100%로 변경 (가로 스크롤 버그 방지) */
+    margin: 0;
+    padding: 0; 
+    box-sizing: border-box;
+    background-color: gainsboro;
+    font-family: 'Noto Sans KR', sans-serif !important;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    overflow-x: hidden; /* 혹시 모를 가로 빠져나감 현상을 원천 차단 */
+}
+
+/* ==========================================================================
+   3. 헤더 영역 (모바일 반응형 대응)
+   ========================================================================== */
+header {
+    width: 100%;
+    height: 90px;
+    background-color: turquoise;
+}
+
+header .header-container {
+    width: 100%;
+    height: 100%;                  
+    display: flex;
+    align-items: center;          
+    justify-content: space-between; 
+    padding: 0 24px; /* 💡 모바일 배려를 위해 좌우 패딩을 약간 줄임 (40px -> 24px) */
+    box-sizing: border-box;
+}
+
+header .logo {
+    height: 35px;                 
+    width: auto;                  
+    margin-right: auto;           
+}
+
+/* 📱 미디어 쿼리: 화면이 아주 작은 모바일(576px 이하)에서 메뉴 글자가 겹치지 않게 조절 */
+@media (max-width: 576px) {
+    header .header-container {
+        padding: 0 16px; /* 패딩 최소화 */
+    }
+    header span {
+        font-size: 13px; /* 글자 크기 살짝 줄임 */
+        margin-left: 12px; /* 글자 간격 좁힘 */
+    }
+}
+
+/* 오른쪽 메뉴 글자 기본 스타일 */
+header span {
+    font-size: 15px;
+    font-weight: 500;
+    color: #333333;
+    cursor: pointer;
+    margin-left: 25px;            
+    transition: color 0.2s;       
+    white-space: nowrap; /* 💡 화면이 줄어들어도 글자가 밑으로 찢어지거나 줄바꿈되지 않도록 고정 */
+}
+
+header span:hover {
+    color: #007bff;               
+}
+
+/* ==========================================================================
+   4. 본문 콘텐츠 영역 (반응형 아코디언 추가 패딩)
+   ========================================================================== */
+.accordion {
+    width: 100%;
+    max-width: 800px;
+    margin-top: 40px;            
+    margin-bottom: 40px;         
+    
+    /* 💡 핵심: 화면이 800px보다 작아질 때, 아코디언 좌우에 최소한의 숨구멍(여백)을 줍니다 */
+    padding: 0 20px; 
+    box-sizing: border-box;
+}

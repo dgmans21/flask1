@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JM CODING</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/jmtest.css') }}">
+</head>
+<body class="jm-page">
+
+  <!-- Header -->
+  <header class="jm-header">
+    <div class="container">
+      <a href="/jmtest" class="jm-logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="JM CODING">
+      </a>
+      <nav class="jm-nav">
+        <a href="#">개발하기</a>
+        <a href="#">웹프론트</a>
+        <a href="#">자바스크립트</a>
+        <a href="#">데이터베이스</a>
+        <a href="#">웹프레임워크</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="jm-hero">
+    <div class="jm-hero-text">
+      <p><span class="highlight">느리더라도</span> 창의적인 개발하기</p>
+      <p><span class="highlight">스스로</span> 만들어가는 개발하기</p>
+    </div>
+  </section>
+
+  <!-- Cards -->
+  <section class="jm-cards">
+    <div class="container">
+      <div class="jm-grid">
+
+        <article class="jm-card">
+          <img class="jm-card-img" src="{{ url_for('static', filename='images/20230420520728.jpg') }}" alt="기계식 키보드">
+          <div class="jm-card-label">개발자 도구</div>
+          <div class="jm-card-title">기계식 키보드</div>
+          <p class="jm-card-desc">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </article>
+
+        <article class="jm-card">
+          <img class="jm-card-img" src="{{ url_for('static', filename='images/dl234.webp') }}" alt="프로그래밍언어">
+          <div class="jm-card-label">프로그래밍언어</div>
+          <div class="jm-card-title">자바, 자바스크립트</div>
+          <p class="jm-card-desc">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </article>
+
+        <article class="jm-card">
+          <img class="jm-card-img" src="{{ url_for('static', filename='images/illustrator_2_overview-960x540.webp') }}" alt="개발열정">
+          <div class="jm-card-label">개발열정</div>
+          <div class="jm-card-title">포기하지않기</div>
+          <p class="jm-card-desc">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </article>
+
+        <article class="jm-card">
+          <div class="jm-card-img placeholder bg-html">HTML · CSS · JS</div>
+          <div class="jm-card-label">웹프론트</div>
+          <div class="jm-card-title">#HTML #CSS #JS</div>
+          <p class="jm-card-desc">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </article>
+
+        <article class="jm-card">
+          <div class="jm-card-img placeholder bg-spring">Spring Boot</div>
+          <div class="jm-card-label">웹백엔드</div>
+          <div class="jm-card-title">SPRING 프레임워크</div>
+          <p class="jm-card-desc">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </article>
+
+        <article class="jm-card">
+          <div class="jm-card-img placeholder bg-sql">SQL · MySQL</div>
+          <div class="jm-card-label">데이터베이스</div>
+          <div class="jm-card-title">mySQL</div>
+          <p class="jm-card-desc">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="jm-footer">
+    <div class="container">
+      <div class="jm-footer-grid">
+        <div>
+          <h4>나의 이력</h4>
+          <ul>
+            <li>대학교졸업</li>
+            <li>개발창업</li>
+            <li>풀스택개발자근무</li>
+            <li>여러가지 프로젝트 참여</li>
+          </ul>
+        </div>
+        <div>
+          <h4>기술스택</h4>
+          <ul>
+            <li>Spring Framework</li>
+            <li>html / css / js</li>
+            <li>Linux 서버</li>
+            <li>mySQL</li>
+          </ul>
+        </div>
+        <div>
+          <h4>나의 취미</h4>
+          <ul>
+            <li>카페에서 개발하기</li>
+            <li>주말 축구하기</li>
+            <li>영화보기</li>
+            <li>혼자산책</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
