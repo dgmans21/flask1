@@ -174,3 +174,7 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+static/images
+static/css/NotoSansKR-Black.ttf
+static/css/NotoSansKR-Light.ttf
+static/css/NotoSansKR-Regular.ttf

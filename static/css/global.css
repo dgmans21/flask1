@@ -13,7 +13,7 @@
 }
 @font-face {
     font-family: 'Noto Sans KR';
-    src: url('/static/css/NotoSansKR-Bold.ttf') format('truetype');
+    src: url('/static/css/NotoSansKR-Black.ttf') format('truetype');
     font-weight: 700;
 }
 
@@ -98,4 +98,237 @@ header span:hover {
     /* 💡 핵심: 화면이 800px보다 작아질 때, 아코디언 좌우에 최소한의 숨구멍(여백)을 줍니다 */
     padding: 0 20px; 
     box-sizing: border-box;
+}
+/* 1. 메인 이미지와 오버레이를 감싸는 큰 부모 상자 */
+.main-img-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden; /* 혹시라도 이미지가 삐져나가는 것을 방지 */
+}
+
+/* 2. 배경 이미지 */
+.main-img-container > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 비율을 유지하며 상자를 꽉 채우는 훌륭한 속성입니다 */
+}
+
+/* 3. 🖤 이미지 위를 덮는 검은색 반투명 막 (오버레이) */
+.main-img-container > .overlay-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* 💡 고정값 500px 대신 100%를 주면 부모 높이가 바뀌어도 자동으로 따라갑니다 */
+    background-color: rgba(0, 0, 0, 0.5); /* 검은색 50% 반투명막 */
+    
+    /* 💡 추가: 글자들을 가로/세로 완벽하게 정중앙 정렬하기 위한 Flexbox */
+    display: flex;
+    justify-content: center; /* 가로 정중앙 */
+    align-items: center;     /* 세로 정중앙 */
+}
+
+/* 4. 📝 흰색 글자 콘텐츠 스타일링 (추가된 부분) */
+.main-img-container .overlay-content {
+    text-align: center; /* 글자 가운데 정렬 */
+    color: white;       /* 어두운 배경 위에 글자가 잘 보이도록 흰색 지정 */
+    padding: 0 20px;    /* 모바일 환경에서 글자가 벽에 붙지 않도록 좌우 여백 */
+}
+
+/* (선택 사항) 글자 간격이나 버튼 디자인을 조금 더 다듬고 싶다면 */
+.main-img-container .overlay-content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    background-color: rgb(118, 118, 25);
+    border-radius: 10px;
+}
+
+.main-img-container .overlay-content p {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    opacity: 0.9;
+}
+.highlight{
+    font-size: 1.5rem;
+    color: #4da3ff;
+}
+/* ==========================================================================
+   1. 전체 카드를 감싸는 가장 바깥쪽 큰 틀 (1400px 대형화)
+   ========================================================================== */
+   .card-list-container {
+    width: 100%;
+    max-width: 1400px;  /* 대형 모니터 기준 시원한 개방감 */
+    margin: 0 auto;
+    padding: 0 30px;    
+    box-sizing: border-box;
+}
+
+/* 2. 큼직한 카드들을 정렬하는 그리드 판 */
+.card-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3열 정렬 */
+    gap: 35px; /* 카드 사이 널찍한 간격 */
+}
+
+/* ==========================================================================
+   3. 개별 카드 디자인 및 마이크로 인터랙션 (큰 박스 버전)
+   ========================================================================== */
+.cards {
+    background-color: white;
+    border-radius: 16px; /* 둥근 모서리 */
+    padding: 35px 30px;  /* 내부 여백을 크게 주어 박스 덩치를 키움 */
+    box-sizing: border-box;
+    min-height: 480px;   /* 글자 수와 상관없이 항상 큼직한 높이 유지 */
+    
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 카드 마우스 호버 효과 */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   4. 알록달록 그라데이션 배경 상자 (대형화 및 부트스트랩 방어)
+   ========================================================================== */
+.card-img.placeholder {
+    width: 100%;
+    height: 220px;       /* 160px에서 220px로 확대하여 시원한 뷰 제공 */
+    border-radius: 12px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    font-size: 1.6rem;   
+    font-weight: 700;
+    color: white !important; /* 부트스트랩 텍스트 컬러 강제 무효화 */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    
+    margin-bottom: 15px;
+}
+
+/* 🎨 알록달록 그라데이션 라인업 (!important로 부트스트랩 회색 완벽 차단) */
+.bg-html   { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important; }   
+.bg-python { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important; }   
+.bg-java   { background: linear-gradient(135deg, #4fb056 0%, teal 100%) !important; }   
+.bg-db     { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; }   
+.bg-react  { background: linear-gradient(135deg, #0c01e2 0%, #7de1ff 100%) !important; }   
+.bg-uiux   { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%) !important; }   
+
+/* ==========================================================================
+   5. 텍스트 및 레이블 디테일
+   ========================================================================== */
+/* 분류 레이블 태그 공통 */
+.card-label {
+    align-self: flex-start; 
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+/* 직군별 태그 색상 정의 */
+.label-frontend { background-color: #e3f2fd; color: #0d47a1; }
+.label-backend  { background-color: #fbe9e7; color: #d84315; }
+.label-data     { background-color: #efebe9; color: #4e342e; }
+.label-db       { background-color: #f3e5f5; color: #4a148c; }
+.label-design   { background-color: #e8f5e9; color: #1b5e20; }
+
+/* 카드 제목 (#HTML #CSS #JS 부분) */
+.card-title {
+    font-size: 22px;     /* 제목을 더 큼직하게 변경 */
+    font-weight: 700;
+    color: #222222;
+    margin-top: 15px;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+/* 카드 설명 */
+.card-desc {
+    font-size: 15px;     /* 가독성을 위해 본문 글씨 크기 확대 */
+    color: #666666;
+    line-height: 1.7;
+    margin: 0;
+    
+    /* 세 줄 이상 넘어가면 자동으로 ... 처리 */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   6. 📱 반응형 (큰 박스가 무너지지 않도록 조율)
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .card-list {
+        grid-template-columns: repeat(2, 1fr); /* 패드/태블릿에선 2열 */
+        gap: 25px;
+    }
+}
+
+@media (max-width: 600px) {
+    .card-list {
+        grid-template-columns: 1fr; /* 모바일에선 무조건 1열로 큼직하게 */
+        gap: 20px;
+    }
+    .card {
+        min-height: auto; 
+        padding: 25px 20px;
+    }
+}
+/* 푸터 전체 배경 틀 */
+.footer-container {
+    width: 100%;
+    background-color: #222222; /* 요즘 웹 트렌드에 맞는 시크한 다크 그레이 */
+    color: #bbbbbb;            /* 눈이 편안한 밝은 회색 글씨 */
+    padding: 50px 0;           /* 위아래 널찍한 여백 */
+    margin-top: auto;          /* 본문 내용이 적어도 푸터가 항상 화면 맨 아래 붙도록 지원 */
+}
+
+/* 💡 핵심: 3열 정렬을 담당하는 부모 판 */
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 묻지도 따지지도 않고 정확히 3등분! */
+    gap: 40px;                             /* 열 사이의 여유로운 간격 */
+    
+    width: 100%;
+    max-width: 1400px;                     /* 우리가 맞춰놓은 본문 큰 박스 크기와 통일 */
+    margin: 0 auto;
+    padding: 0 30px;
+    box-sizing: border-box;
+}
+
+/* 개별 열(Column) 내부의 3줄 텍스트 스타일링 */
+.footer-col h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: white;             /* 대제목은 흰색으로 강조 */
+    margin-bottom: 18px;      /* 제목과 본문 사이 간격 */
+}
+
+.footer-col p {
+    font-size: 14px;
+    line-height: 1.8;         /* 💡 줄간격을 1.8 정도로 여유 있게 주어야 올드해 보이지 않습니다 */
+    margin: 6px 0;            /* 텍스트 줄끼리의 미세한 간격 */
+}
+
+/* ==========================================================================
+   📱 푸터 반응형 무너짐 방지 (모바일 배려)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr; /* 화면이 좁은 모바일에서는 세로로 1줄씩 자연스럽게 떨어짐 */
+        gap: 30px;
+        text-align: center;         /* 모바일에서는 가운데 정렬이 훨씬 깔끔합니다 */
+    }
 }
