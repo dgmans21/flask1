@@ -220,32 +220,59 @@ function init() {
     });
   });
 
-  // 닫기 (X 버튼, 백드롭)
-  document.querySelectorAll('[data-close]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      closeOverlay(btn.closest('.ai-overlay'));
-    });
-  });
-
-  // ESC 닫기
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeAllOverlays();
-  });
+ 
 
   // 폼 제출 — 모델별 분기
-  Object.values(MODELS).forEach((model) => {
-    const form = document.getElementById(model.formId);
-    if (!form) return;
+    Object.values(MODELS).forEach((model) => {
+        const form = document.getElementById(model.formId);
+        if (!form) return;
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      submitPrediction(model, form);
-    });
+        form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        submitPrediction(model, form);
+        });
 
-    form.addEventListener('reset', () => {
-      hideResult(model);
+        form.addEventListener('reset', () => {
+        hideResult(model);
+        });
+
+        const overlay = form.closest('.ai-overlay') || form.closest('.modal') || form.parentElement;
+
+        if (overlay) {
+            // 오버레이 영역 전체에서 data-close 속성을 가진 버튼을 모두 찾습니다.
+            overlay.querySelectorAll('[data-close]').forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    // 💡 1. 폼 강제 초기화 명령 (입력값 비우기 + hideResult 실행)
+                    form.reset();
+                    
+                    // 💡 2. 오버레이 닫기 함수 호출
+                    if (typeof closeOverlay === 'function') {
+                        closeOverlay(overlay);
+                    }
+                });
+            });
+        }
+
+        // ESC 닫기
+     // ESC 키를 눌렀을 때도 팝업을 닫고 입력값을 초기화합니다.
+        document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            // 1. 화면에 있는 모든 폼 요소를 찾습니다.
+            const allForms = document.querySelectorAll('form');
+            
+            // 2. 모든 폼을 강제로 리셋시킵니다.
+            // (이게 실행되면 우리가 등록해둔 'reset' 이벤트가 발동하여 hideResult도 자동으로 실행됩니다.)
+            allForms.forEach((form) => {
+                form.reset();
+            });
+
+            // 3. 마지막으로 기존에 쓰던 오버레이 닫기 기능을 실행합니다.
+            if (typeof closeAllOverlays === 'function') {
+                closeAllOverlays();
+            }
+        }
+        });
     });
-  });
-}
+    }
 
 document.addEventListener('DOMContentLoaded', init);
