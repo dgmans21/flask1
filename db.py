@@ -1,33 +1,52 @@
-# 1. 다른 무엇보다 무조건 1등으로 .env를 로드합니다!
 from dotenv import load_dotenv
 load_dotenv()
 
-# 2. 그 다음 필요한 라이브러리들을 import 합니다.
 import os
-from flask import Flask, jsonify, g
+from flask import g
 import pymysql
 
-# 3. 블루프린트 등 다른 파일 import는 반드시 load_dotenv() 아래에 위치해야 합니다.
-# 예: from routes.user_router import dbmng_bp 
-
-app = Flask(__name__)
-
 db_config = {
-    'host': os.getenv('DB_HOST'),
+    'host': os.getenv('DB_HOST', '127.0.0.1'),
+    'port': int(os.getenv('DB_PORT', 3306)),
     'user': os.getenv('DB_USER'),
-    'password': os.getenv('DB_PASSWORD'),
-    'database': os.getenv('DB_NAME'), # 이제 정상적으로 .env 값을 읽어옵니다!
+    'password': os.getenv('DB_PASSWORD', ''),
+    'database': os.getenv('DB_NAME'),
     'charset': 'utf8mb4',
-    'cursorclass': pymysql.cursors.DictCursor
+    'cursorclass': pymysql.cursors.DictCursor,
 }
+
+
+def _validate_db_config():
+    missing = [k for k in ('DB_USER', 'DB_NAME') if not os.getenv(k)]
+    if missing:
+        raise RuntimeError(
+            f'.env에 {", ".join(missing)} 값이 없습니다. '
+            '.env.example을 참고해 .env 파일을 작성하세요.'
+        )
+
 
 def get_db():
     if 'db' not in g:
-        g.db = pymysql.connect(**db_config)
+        _validate_db_config()
+        try:
+            g.db = pymysql.connect(**db_config)
+        except pymysql.err.OperationalError as e:
+            err_msg = str(e)
+            if 'auth_gssapi' in err_msg or '2059' in err_msg:
+                raise RuntimeError(
+                    'MariaDB 인증 방식(auth_gssapi_client)이 PyMySQL과 호환되지 않습니다. '
+                    'MariaDB에서 아래 SQL을 실행한 뒤 .env의 DB_USER/DB_PASSWORD를 맞춰 주세요.\n'
+                    "ALTER USER 'root'@'localhost' IDENTIFIED VIA mysql_native_password "
+                    "USING PASSWORD('비밀번호');\n"
+                    "ALTER USER 'root'@'127.0.0.1' IDENTIFIED VIA mysql_native_password "
+                    "USING PASSWORD('비밀번호');\n"
+                    'FLUSH PRIVILEGES;'
+                ) from e
+            raise
     return g.db
+
 
 def close_db(e=None):
     db = g.pop('db', None)
     if db is not None and db.open:
         db.close()
-        #print("🔄 [Flask 시스템] 사용이 끝난 DB 커넥션이 자동으로 반납되었습니다.")

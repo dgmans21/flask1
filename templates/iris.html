@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/iris.css') }}">
+</head>
+<body class="iris-page">
+
+  <div class="iris-ambient" aria-hidden="true"></div>
+
+  <div class="iris-shell">
+
+    <!-- ── Nav ── -->
+    <header class="iris-nav">
+      <div class="iris-logo">
+        <div class="iris-logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        AI Studio
+      </div>
+      <div class="iris-nav-status">
+        <span class="iris-nav-dot"></span>
+        Models Online
+      </div>
+    </header>
+
+    <!-- ── Home (초기 화면만 노출) ── -->
+    <main class="iris-hero" id="screen-home">
+      <p class="iris-hero-eyebrow">Machine Learning API</p>
+      <h1>어떤 모델을<br>실행할까요?</h1>
+      <p>아래에서 서비스를 선택하면<br>입력 폼이 열립니다.</p>
+
+      <div class="service-grid">
+        <button type="button" class="service-card service-card--iris" data-open="overlay-iris">
+          <div class="service-card-top">
+            <div class="service-icon-wrap" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                <circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+              </svg>
+            </div>
+            <span class="service-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </div>
+          <h2>Iris 붓꽃 분류</h2>
+          <p>꽃받침·꽃잎 4가지 수치로 품종을 예측하는 분류 모델입니다.</p>
+          <div class="service-meta">
+            <span>Classification</span>
+            <span>4 features</span>
+          </div>
+        </button>
+
+        <button type="button" class="service-card service-card--car" data-open="overlay-car">
+          <div class="service-card-top">
+            <div class="service-icon-wrap" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 17h14M5 17a2 2 0 01-2-2V9a2 2 0 012-2h1l2-3h8l2 3h1a2 2 0 012 2v6a2 2 0 01-2 2M5 17H3"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/>
+              </svg>
+            </div>
+            <span class="service-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </div>
+          <h2>연비 효율 계산</h2>
+          <p>마력·중량·배기량·가속도로 예상 연비(MPG)를 산출하는 회귀 모델입니다.</p>
+          <div class="service-meta">
+            <span>Regression</span>
+            <span>MPG output</span>
+          </div>
+        </button>
+      </div>
+    </main>
+
+    <footer class="iris-footer">&copy; 2026 AI Studio</footer>
+  </div>
+
+
+  <!-- ══ Iris Overlay — 기본 숨김, JS로 .is-open 추가 ══ -->
+  <div id="overlay-iris" class="ai-overlay" aria-hidden="true" role="dialog" aria-labelledby="iris-title">
+    <div class="ai-overlay-backdrop" data-close></div>
+    <div class="ai-drawer">
+      <div class="drawer-handle" aria-hidden="true"></div>
+      <div class="drawer-header">
+        <div class="drawer-header-info">
+          <h2 id="iris-title">Iris 붓꽃 분류</h2>
+          <p>POST /api/ai/predict_iris</p>
+        </div>
+        <button type="button" class="btn-close" data-close aria-label="닫기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="drawer-body">
+        <form id="form-iris" data-model="iris" data-api="/api/ai/predict_iris" data-method="POST" novalidate>
+          <div class="form-grid">
+            <div class="field">
+              <label for="sepal_length">Sepal Length<em>꽃받침 길이 (cm)</em></label>
+              <input type="number" id="sepal_length" name="sepal_length" step="0.1" min="0" placeholder="5.8">
+            </div>
+            <div class="field">
+              <label for="sepal_width">Sepal Width<em>꽃받침 너비 (cm)</em></label>
+              <input type="number" id="sepal_width" name="sepal_width" step="0.1" min="0" placeholder="3.0">
+            </div>
+            <div class="field">
+              <label for="petal_length">Petal Length<em>꽃잎 길이 (cm)</em></label>
+              <input type="number" id="petal_length" name="petal_length" step="0.1" min="0" placeholder="3.8">
+            </div>
+            <div class="field">
+              <label for="petal_width">Petal Width<em>꽃잎 너비 (cm)</em></label>
+              <input type="number" id="petal_width" name="petal_width" step="0.1" min="0" placeholder="1.2">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-submit" id="btn-iris-submit">예측 실행</button>
+            <button type="reset" class="btn-reset">초기화</button>
+          </div>
+        </form>
+        <div id="result-iris" class="result-box result-box--iris" role="status" aria-live="polite">
+          <div class="result-label">Prediction</div>
+          <div class="result-value" id="result-iris-value">—</div>
+          <p class="result-message" id="result-iris-message"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ Car Overlay — 기본 숨김 ══ -->
+  <div id="overlay-car" class="ai-overlay" aria-hidden="true" role="dialog" aria-labelledby="car-title">
+    <div class="ai-overlay-backdrop" data-close></div>
+    <div class="ai-drawer">
+      <div class="drawer-handle" aria-hidden="true"></div>
+      <div class="drawer-header">
+        <div class="drawer-header-info">
+          <h2 id="car-title">연비 효율 계산</h2>
+          <p>POST /api/ai/predict_car</p>
+        </div>
+        <button type="button" class="btn-close" data-close aria-label="닫기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="drawer-body">
+        <form id="form-car" data-model="car" data-api="/api/ai/predict_car" data-method="POST" novalidate>
+          <div class="form-grid">
+            <div class="field">
+              <label for="horsepower">Horsepower<em>마력 (hp)</em></label>
+              <input type="number" id="horsepower" name="horsepower" step="1" min="0" placeholder="100">
+            </div>
+            <div class="field">
+              <label for="weight">Weight<em>중량 (lbs)</em></label>
+              <input type="number" id="weight" name="weight" step="1" min="0" placeholder="3000">
+            </div>
+            <div class="field">
+              <label for="displacement">Displacement<em>배기량 (cu.in)</em></label>
+              <input type="number" id="displacement" name="displacement" step="1" min="0" placeholder="200">
+            </div>
+            <div class="field">
+              <label for="acceleration">Acceleration<em>가속도</em></label>
+              <input type="number" id="acceleration" name="acceleration" step="0.1" min="0" placeholder="15.0">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-submit" id="btn-car-submit">연비 계산</button>
+            <button type="reset" class="btn-reset">초기화</button>
+          </div>
+        </form>
+        <div id="result-car" class="result-box result-box--car" role="status" aria-live="polite">
+          <div class="result-label">Predicted MPG</div>
+          <div class="result-value" id="result-car-value">—</div>
+          <p class="result-message" id="result-car-message"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/iris.js') }}"></script>
+</body>
+</html>
