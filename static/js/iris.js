@@ -12,6 +12,7 @@ const MODELS = {
     formId: 'form-iris',
     resultId: 'result-iris',
     valueId: 'result-iris-value',
+    accuracyId: 'result-iris-accuracy', // 💡 추가: 정확도를 표시할 HTML 요소 ID
     messageId: 'result-iris-message',
     submitBtnId: 'btn-iris-submit',
     api: '/api/ai/predict_iris',
@@ -34,6 +35,7 @@ const MODELS = {
     formId: 'form-car',
     resultId: 'result-car',
     valueId: 'result-car-value',
+    accuracyId: 'result-car-accuracy', // 💡 추가: 정확도를 표시할 HTML 요소 ID
     messageId: 'result-car-message',
     submitBtnId: 'btn-car-submit',
     api: '/api/ai/predict_car',
@@ -104,33 +106,47 @@ function hideResult(model) {
 function showLoading(model) {
   const box = document.getElementById(model.resultId);
   const valueEl = document.getElementById(model.valueId);
+  const accuracyEl = document.getElementById(model.accuracyId); // 💡 추가
   const msgEl = document.getElementById(model.messageId);
 
   box.classList.add('is-visible', 'is-loading');
   box.classList.remove('is-error');
   valueEl.textContent = '';
+  if (accuracyEl) accuracyEl.textContent = ''; // 💡 로딩 시 정확도 초기화
   msgEl.textContent = `[${model.label}] ${model.loadingLabel}`;
 }
 
 function showSuccess(model, json) {
   const box = document.getElementById(model.resultId);
   const valueEl = document.getElementById(model.valueId);
+  const accuracyEl = document.getElementById(model.accuracyId); // 💡 추가
   const msgEl = document.getElementById(model.messageId);
 
   box.classList.add('is-visible');
   box.classList.remove('is-loading', 'is-error');
+  
+  // 결과 값 반영
   valueEl.textContent = model.formatResult(json.data);
+  
+  // 💡 추가: 정확도(accuracy) 데이터가 오면 화면에 퍼센트(%) 형태로 출력
+  if (accuracyEl && json.data && json.data.accuracy != null) {
+    const accuracyPercent = (json.data.accuracy * 100).toFixed(0);
+    accuracyEl.textContent = `(모델 정확도: ${accuracyPercent}%)`;
+  }
+  
   msgEl.textContent = model.formatMessage(json.data, json.message);
 }
 
 function showError(model, message) {
   const box = document.getElementById(model.resultId);
   const valueEl = document.getElementById(model.valueId);
+  const accuracyEl = document.getElementById(model.accuracyId); // 💡 추가
   const msgEl = document.getElementById(model.messageId);
 
   box.classList.add('is-visible', 'is-error');
   box.classList.remove('is-loading');
   valueEl.textContent = '오류 발생';
+  if (accuracyEl) accuracyEl.textContent = ''; // 💡 에러 발생 시 정확도 초기화
   msgEl.textContent = `[${model.label}] ${message}`;
 }
 
@@ -142,7 +158,7 @@ function collectPayload(form, model) {
     const input = form.elements[key];
     const raw = input?.value?.trim();
 
-    if (raw === '' || raw == null) {
+  if (raw === '' || raw == null) {
       payload[key] = model.defaults[key];
     } else {
       const num = parseFloat(raw);
@@ -220,59 +236,45 @@ function init() {
     });
   });
 
- 
-
   // 폼 제출 — 모델별 분기
-    Object.values(MODELS).forEach((model) => {
-        const form = document.getElementById(model.formId);
-        if (!form) return;
+  Object.values(MODELS).forEach((model) => {
+    const form = document.getElementById(model.formId);
+    if (!form) return;
 
-        form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        submitPrediction(model, form);
-        });
-
-        form.addEventListener('reset', () => {
-        hideResult(model);
-        });
-
-        const overlay = form.closest('.ai-overlay') || form.closest('.modal') || form.parentElement;
-
-        if (overlay) {
-            // 오버레이 영역 전체에서 data-close 속성을 가진 버튼을 모두 찾습니다.
-            overlay.querySelectorAll('[data-close]').forEach((btn) => {
-                btn.addEventListener('click', () => {
-                    // 💡 1. 폼 강제 초기화 명령 (입력값 비우기 + hideResult 실행)
-                    form.reset();
-                    
-                    // 💡 2. 오버레이 닫기 함수 호출
-                    if (typeof closeOverlay === 'function') {
-                        closeOverlay(overlay);
-                    }
-                });
-            });
-        }
-
-        // ESC 닫기
-     // ESC 키를 눌렀을 때도 팝업을 닫고 입력값을 초기화합니다.
-        document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            // 1. 화면에 있는 모든 폼 요소를 찾습니다.
-            const allForms = document.querySelectorAll('form');
-            
-            // 2. 모든 폼을 강제로 리셋시킵니다.
-            // (이게 실행되면 우리가 등록해둔 'reset' 이벤트가 발동하여 hideResult도 자동으로 실행됩니다.)
-            allForms.forEach((form) => {
-                form.reset();
-            });
-
-            // 3. 마지막으로 기존에 쓰던 오버레이 닫기 기능을 실행합니다.
-            if (typeof closeAllOverlays === 'function') {
-                closeAllOverlays();
-            }
-        }
-        });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      submitPrediction(model, form);
     });
+
+    form.addEventListener('reset', () => {
+      hideResult(model);
+    });
+
+    const overlay = form.closest('.ai-overlay') || form.closest('.modal') || form.parentElement;
+
+    if (overlay) {
+      overlay.querySelectorAll('[data-close]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          form.reset();
+          if (typeof closeOverlay === 'function') {
+            closeOverlay(overlay);
+          }
+        });
+      });
     }
+  });
+
+  // ESC 키 전역 바인딩 (루프 밖으로 한 번만 등록하도록 최적화)
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('form').forEach((form) => {
+        form.reset();
+      });
+      if (typeof closeAllOverlays === 'function') {
+        closeAllOverlays();
+      }
+    }
+  });
+}
 
 document.addEventListener('DOMContentLoaded', init);

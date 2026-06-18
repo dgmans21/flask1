@@ -585,6 +585,20 @@ body.iris-page {
   font-size: 0.95rem;
   color: var(--danger);
 }
+/* Result Accuracy (정확도 표시 스타일 규칙) */
+.result-accuracy {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-tertiary); /* 기존 스펙트럼에 맞춘 조화로운 서브 텍스트 색상 */
+  margin-top: 0.15rem;         /* 결과값(result-value)과의 간격 격차 최소화 */
+  display: block;              /* 로딩이나 에러 시 유연한 레이아웃 보장 */
+}
+
+/* 로딩 중이거나 에러 상태일 때는 정확도 영역을 깔끔하게 숨김 처리 */
+.result-box.is-loading .result-accuracy,
+.result-box.is-error .result-accuracy {
+  display: none;
+}
 
 /* Desktop: center modal instead of bottom drawer */
 @media (min-width: 640px) {

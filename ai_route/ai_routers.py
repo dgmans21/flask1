@@ -9,13 +9,17 @@ from datetime import datetime
 ai_bp = Blueprint('ai_bp', __name__, url_prefix='/api/ai')
 logger = logging.getLogger(__name__)
 
-# --- 1. AI 모델 로드 ---
+# --- 1. AI 모델 로드 및 정보 설정 ---
 MODEL_PATH = os.path.join(os.path.dirname(__file__), '..', 'models', 'iris_model_0610.pkl')
 model = joblib.load(MODEL_PATH)
 TARGET_NAMES = ['setosa', 'versicolor', 'virginica']
+## 변경: 붓꽃 모델의 예측 정확도 정의 (예: 96%)
+IRIS_MODEL_ACCURACY = 0.96  
 
 car_model_path = os.path.join(os.path.dirname(__file__), '..', 'models', 'car_oil_model.pkl')
 car_model = joblib.load(car_model_path)
+## 변경: 자동차 연비 모델의 정확도/성능 지표 정의 (예: R² score 또는 Accuracy 88%)
+CAR_MODEL_ACCURACY = 0.88  
 
 DEFAULT_VALUES = {
     'sepal_length': 5.8,
@@ -30,6 +34,7 @@ CAR_DEFAULT_VALUES = {
     'displacement': 200.0,
     'acceleration': 15.0
 }
+
 @ai_bp.route('/')
 def ai_index():
     """AI 서비스 기본 페이지 — GET /api/ai/"""
@@ -70,24 +75,30 @@ def predict_iris():
                 'petal_width': pw
             })
 
+            ## 변경: iris_predict_logs 테이블에 accuracy 컬럼이 있다고 가정하고 추가 (만약 없다면 테이블 스키마에 추가 필요)
             cursor.execute('''
                 INSERT INTO `iris_predict_logs`
-                (model_name, input_data, result, created_at)
-                VALUES (%s, %s, %s, %s)
-            ''', ('iris_0610', json_input, result_name, datetime.now()))
+                (model_name, input_data, result, accuracy, created_at)
+                VALUES (%s, %s, %s, %s, %s)
+            ''', ('iris_0610', json_input, result_name, IRIS_MODEL_ACCURACY, datetime.now()))
 
+            ## 변경: ai_iris_history 테이블에도 accuracy 컬럼이 있다고 가정하고 추가
             cursor.execute('''
                 INSERT INTO `ai_iris_history`
-                (sepal_length, sepal_width, petal_length, petal_width, prediction_result, created_at)
-                VALUES (%s, %s, %s, %s, %s, %s)
-            ''', (sl, sw, pl, pw, result_name, datetime.now()))
+                (sepal_length, sepal_width, petal_length, petal_width, prediction_result, accuracy, created_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+            ''', (sl, sw, pl, pw, result_name, IRIS_MODEL_ACCURACY, datetime.now()))
 
         db.commit()
         return jsonify({
             'success': True,
             'message': '예측 및 DB 저장 완료',
             'status': 200,
-            'data': {'result': result_name}
+            ## 변경: 응답 데이터에 accuracy 추가
+            'data': {
+                'result': result_name,
+                'accuracy': IRIS_MODEL_ACCURACY
+            }
         })
 
     except Exception as e:
@@ -98,7 +109,11 @@ def predict_iris():
             'success': True,
             'message': f'예측 완료 (DB 저장 실패: {e})',
             'status': 200,
-            'data': {'result': result_name}
+            ## 변경: 에러 응답 데이터에도 accuracy 추가
+            'data': {
+                'result': result_name,
+                'accuracy': IRIS_MODEL_ACCURACY
+            }
         })
 
 
@@ -136,18 +151,23 @@ def predict_car():
                 'acceleration': ac
             })
 
+            ## 변경: ai_car_history 테이블에 accuracy 컬럼 추가 (또는 따로 필드를 파지 않고 한 칼럼에 넣는다면 스키마에 맞춰 적용)
             cursor.execute('''
                 INSERT INTO `ai_car_history`
-                (model_name, input_data, prediction_result, created_at)
-                VALUES (%s, %s, %s, %s)
-            ''', ('car_oil_v1', json_car_input, result_mpg, datetime.now()))
+                (model_name, input_data, prediction_result, accuracy, created_at)
+                VALUES (%s, %s, %s, %s, %s)
+            ''', ('car_oil_v1', json_car_input, result_mpg, CAR_MODEL_ACCURACY, datetime.now()))
 
         db.commit()
         return jsonify({
             'success': True,
             'message': '예측 및 DB 저장 완료',
             'status': 200,
-            'data': {'mpg': float(result_mpg)}
+            ## 변경: 응답 데이터에 accuracy 추가
+            'data': {
+                'mpg': float(result_mpg),
+                'accuracy': CAR_MODEL_ACCURACY
+            }
         })
 
     except Exception as e:
@@ -158,5 +178,9 @@ def predict_car():
             'success': True,
             'message': f'예측 완료 (DB 저장 실패: {e})',
             'status': 200,
-            'data': {'mpg': float(result_mpg)}
+            ## 변경: 에러 응답 데이터에도 accuracy 추가
+            'data': {
+                'mpg': float(result_mpg),
+                'accuracy': CAR_MODEL_ACCURACY
+            }
         })

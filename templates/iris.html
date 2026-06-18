@@ -15,7 +15,6 @@
 
   <div class="iris-shell">
 
-    <!-- ── Nav ── -->
     <header class="iris-nav">
       <div class="iris-logo">
         <div class="iris-logo-mark" aria-hidden="true">
@@ -29,7 +28,6 @@
       </div>
     </header>
 
-    <!-- ── Home (초기 화면만 노출) ── -->
     <main class="iris-hero" id="screen-home">
       <p class="iris-hero-eyebrow">Machine Learning API</p>
       <h1>어떤 모델을<br>실행할까요?</h1>
@@ -80,7 +78,6 @@
   </div>
 
 
-  <!-- ══ Iris Overlay — 기본 숨김, JS로 .is-open 추가 ══ -->
   <div id="overlay-iris" class="ai-overlay" aria-hidden="true" role="dialog" aria-labelledby="iris-title">
     <div class="ai-overlay-backdrop" data-close></div>
     <div class="ai-drawer">
@@ -122,6 +119,9 @@
         <div id="result-iris" class="result-box result-box--iris" role="status" aria-live="polite">
           <div class="result-label">Prediction</div>
           <div class="result-value" id="result-iris-value">—</div>
+          
+          <div class="result-accuracy" id="result-iris-accuracy" style="font-size: 0.85rem; color: rgba(250, 250, 250, 0.6); margin-top: -4px; margin-bottom: 12px; font-weight: 500;"></div>
+          
           <p class="result-message" id="result-iris-message"></p>
         </div>
       </div>
@@ -129,7 +129,6 @@
   </div>
 
 
-  <!-- ══ Car Overlay — 기본 숨김 ══ -->
   <div id="overlay-car" class="ai-overlay" aria-hidden="true" role="dialog" aria-labelledby="car-title">
     <div class="ai-overlay-backdrop" data-close></div>
     <div class="ai-drawer">
@@ -171,6 +170,9 @@
         <div id="result-car" class="result-box result-box--car" role="status" aria-live="polite">
           <div class="result-label">Predicted MPG</div>
           <div class="result-value" id="result-car-value">—</div>
+          
+          <div class="result-accuracy" id="result-car-accuracy" style="font-size: 0.85rem; color: rgba(250, 250, 250, 0.6); margin-top: -4px; margin-bottom: 12px; font-weight: 500;"></div>
+          
           <p class="result-message" id="result-car-message"></p>
         </div>
       </div>
