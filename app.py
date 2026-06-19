@@ -1,6 +1,8 @@
 from flask import Flask
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.json.ensure_ascii = False
 from routes.view_routers import view_bp
 from routes.test_router import test_bp  

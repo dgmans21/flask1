@@ -84,8 +84,7 @@
       <div class="drawer-handle" aria-hidden="true"></div>
       <div class="drawer-header">
         <div class="drawer-header-info">
-          <h2 id="iris-title">Iris 붓꽃 분류</h2>
-          <p>POST /api/ai/predict_iris</p>
+          <h2 id="iris-title">Iris 붓꽃 분류</h2>          
         </div>
         <button type="button" class="btn-close" data-close aria-label="닫기">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -135,8 +134,7 @@
       <div class="drawer-handle" aria-hidden="true"></div>
       <div class="drawer-header">
         <div class="drawer-header-info">
-          <h2 id="car-title">연비 효율 계산</h2>
-          <p>POST /api/ai/predict_car</p>
+          <h2 id="car-title">연비 효율 계산</h2>         
         </div>
         <button type="button" class="btn-close" data-close aria-label="닫기">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -151,7 +149,7 @@
             </div>
             <div class="field">
               <label for="weight">Weight<em>중량 (lbs)</em></label>
-              <input type="number" id="weight" name="weight" step="1" min="0" placeholder="3000">
+              <input type="number" id="weight" name="weight" step="10" min="0" placeholder="3000">
             </div>
             <div class="field">
               <label for="displacement">Displacement<em>배기량 (cu.in)</em></label>
@@ -181,4 +179,4 @@
 
   <script src="{{ url_for('static', filename='js/iris.js') }}"></script>
 </body>
-</html>
+  </html>
